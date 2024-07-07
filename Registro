@@ -1,0 +1,26 @@
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "userdb";
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Verificar conexión
+if ($conn->connect_error) {
+die("Conexión fallida: " . $conn->connect_error);
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$fullname = $_POST['fullname'];
+$email = $_POST['email'];
+$password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+$sql = "INSERT INTO users (fullname, email, password) VALUES ('$fullname',
+'$email', '$password')";
+if ($conn->query($sql) === TRUE) {
+echo "Registro exitoso";
+} else {
+echo "Error: " . $sql . "<br>" . $conn->error;
+}
+$conn->close();
+}
+?>
